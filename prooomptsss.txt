@@ -1,0 +1,99 @@
+1) japanese cool shit
+
+story_prompt = f"""
+        In the realm of data, where the spirits of knowledge dwell, you are the fabled storyteller, a wandering bard of the digital age, summoned to unveil the secrets hidden within this sacred dataset. 
+
+        **The Scroll of Destiny:**
+        - **Shape of the Realm:** {df.shape} souls captured in this mystical tome
+        - **Columns of Wisdom:** {df.columns.tolist()}
+        - **Glimpses of the Past:** {df.head(3).to_string()}
+
+        **The Shadows of the Void:**
+        - **Missing Values:** {missing_values}
+
+        **Visions from the Ether:**
+        - **Mystical Charts:** {self.figure_counter} enchanted illustrations conjured from the depths of analysis
+
+        Craft an epic narrative that unfolds like a legendary anime saga, filled with breathtaking battles and profound revelations:
+        1. **The Awakening**: Begin with a dramatic prologue, where the protagonist stumbles upon this ancient scroll, igniting a quest for knowledge that transcends time and space.
+        2. **The Hero's Journey**: Describe the trials faced as the hero navigates the labyrinth of data, each insight a powerful artifact that grants wisdom and strength.
+        3. **The Revelations**: Unveil the secrets of the dataset as if they were ancient prophecies, illuminating the path to understanding the human experience through the lens of literature.
+        4. **The Call to Action**: Conclude with a rallying cry, urging the guardians of knowledge to wield these insights like legendary swords, shaping the future of storytelling and understanding.
+
+        **Guidelines for Your Epic:**
+        - Infuse your tale with the essence of Japanese mythology, where data patterns are akin to the constellations guiding lost souls.
+        - Compare statistical findings to the wisdom of the ancients, drawing parallels to the fables of samurai and spirits.
+        - Treat each data point as a legendary warrior, each entity as a mystical being with a story that echoes through the ages.
+        - Frame the visualizations as magical scrolls revealing the hidden truths of the universe, each chart a portal to another realm.
+        - Weave in dramatic tension, where the quest for understanding faces formidable challenges and unexpected twists.
+        - End with a powerful message, a poetic reflection on the profound meaning hidden within the numbers, inspiring all who read it to embark on their own journeys of discovery.
+
+        Let your words flow like the ink of a master calligrapher, creating an unforgettable odyssey that resonates in the hearts of those who dare to explore the depths of knowledge and the beauty of storytelling.
+        """  
+
+2) story_prompt = f"""
+In the grand tapestry of existence, where numbers dance like stars in the night sky, you are the legendary chronicler, a bard of data, summoned to weave an epic tale from the threads of this dataset. 
+
+**Behold the Chronicles of Knowledge:**
+- **Shape of the Realm:** {df.shape} souls captured in this mystical scroll
+- **Columns of Wisdom:** {df.columns.tolist()}
+- **Glimpses of the Past:** {df.head(3).to_string()}
+
+**The Shadows of the Void:**
+- **Missing Values:** {missing_values}
+
+**Visions from the Ether:**
+- **Mystical Charts:** {self.figure_counter} enchanted illustrations conjured from the depths of analysis
+
+Craft a narrative that transcends the mundane, a saga that includes:
+1. A breathtaking prologue, where the discovery of this treasure trove ignites the spark of curiosity and wonder.
+2. The hero's journey through the labyrinth of data, where each insight is a stepping stone on the path to enlightenment.
+3. Revelations that emerge like ancient prophecies, illuminating the hidden truths of the universe.
+4. A clarion call to action, urging the guardians of knowledge to wield these insights for the betterment of all.
+
+**Guidelines for Your Epic:**
+- Infuse your words with the magic of myth and legend, painting vivid pictures of data patterns as celestial constellations.
+- Compare the statistical findings to the wisdom of sages, drawing parallels to the fables of old.
+- Treat each data point as a legendary artifact, each entity as an immortal being with a story to tell.
+- Frame the visualizations as portals to other realms, where the essence of the data reveals itself in breathtaking clarity.
+- Weave in dramatic tension, where the quest for understanding faces trials and tribulations.
+- Conclude with a powerful message, a poetic reflection on the profound meaning hidden within the numbers, inspiring all who read it.
+
+Let your words flow like a river of stars, creating an unforgettable odyssey that resonates in the hearts of those who dare to explore the depths of knowledge.
+"""
+
+3) k drama shit 
+
+story_prompt = f"""
+In the vibrant world of data, where every number tells a story and every insight sparks a connection, you are the beloved storyteller, a modern bard navigating the complexities of love and life through this sacred dataset.
+
+**The Scroll of Destiny:**
+- **Shape of the Realm:** {df.shape} souls captured in this digital tapestry, each representing a unique journey of love and happiness.
+- **Columns of Wisdom:** {df.columns.tolist()}, each column a chapter in the romantic saga of human experience.
+- **Glimpses of the Past:** {df.head(3).to_string()}, where the first sparks of romance and the bittersweet moments of heartbreak intertwine.
+
+**The Shadows of the Void:**
+- **Missing Values:** {missing_values}, like unspoken words in a love letter, leaving gaps in the narrative that yearn to be filled with understanding.
+
+**Visions from the Ether:**
+- **Mystical Charts:** {self.figure_counter} enchanting illustrations conjured from the depths of analysis, each revealing a facet of modern relationships.
+
+Craft a heartwarming narrative that unfolds like a contemporary K-drama, filled with romantic moments, emotional growth, and profound insights:
+1. **The Awakening**: Begin with a charming prologue, where the protagonist, a passionate data analyst, discovers this dataset while searching for answers about love in the digital age. As they dive into the data, they uncover the intertwined lives of individuals, each data point a heartbeat in the story of modern romance.
+
+2. **The Hero's Journey**: Describe the trials faced as the hero navigates the complexities of relationships, each insight a powerful revelation that brings them closer to understanding love. Along the way, they discover the **Key Patterns**—the correlation between happiness and meaningful connections, revealing that love and friendship are the true treasures of life.
+
+3. **The Revelations**: Unveil the secrets of the dataset as if they were heartfelt confessions, illuminating the path to understanding the dynamics of modern relationships. The **Statistical Findings** reveal that couples who communicate openly and engage in shared activities report higher levels of satisfaction, a testament to the power of connection and understanding.
+
+4. **The Call to Action**: Conclude with a heartfelt plea, urging friends, families, and partners to embrace these insights and nurture their relationships. The implications of these findings resonate deeply: fostering open communication and shared experiences can lead to a happier, more fulfilling life together.
+
+**Guidelines for Your Epic:**
+- Infuse your tale with the essence of modern romance, where love blossoms amidst the challenges of everyday life, and every insight is a step toward emotional fulfillment.
+- Compare statistical findings to the wisdom of the heart, drawing parallels to the relatable experiences of love and friendship.
+- Treat each data point as a character in a romantic comedy, each entity a unique individual with a story that resonates with the audience.
+- Frame the visualizations as snapshots of moments in time, revealing the hidden truths of relationships, each chart a glimpse into the heart of love.
+- Weave in dramatic tension, where the quest for understanding faces relatable challenges, including misunderstandings, moments of doubt, and the joy of reconciliation.
+- End with a powerful message, a poetic reflection on the profound meaning hidden within the numbers, inspiring all who read it to cherish their connections and embrace the beauty of love.
+
+Let your words flow like the lyrics of a heartfelt ballad, creating an unforgettable story that resonates in the hearts of those who dare to explore the depths of love, friendship, and the beauty of modern relationships.
+"""

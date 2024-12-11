@@ -10,8 +10,7 @@ from typing import Optional, Dict, Any, List
 import traceback
 import re
 from pathlib import Path
-from io import StringIO
-import sys
+from datetime import datetime
 
 class LLMAnalyzer:
     def __init__(self):
@@ -25,18 +24,23 @@ class LLMAnalyzer:
             "Authorization": f"Bearer {self.token}",
         }
         self.figure_counter = 0
-        self.analysis_results = []
-        self.plot_descriptions = []
+        self.analysis_summary = []
         
     def _save_and_close_plot(self, title: str):
         """Save the current plot to a file and close it."""
         self.figure_counter += 1
-        filename = f'plot_{self.figure_counter}.png'
+        # Create plots directory if it doesn't exist
+        plots_dir = Path("plots")
+        plots_dir.mkdir(exist_ok=True)
+        
+        # Generate filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = plots_dir / f'plot_{self.figure_counter}_{timestamp}.png'
+        
         plt.title(title)
-        plt.savefig(filename)
-        # Store plot description
-        self.plot_descriptions.append(f"Plot {self.figure_counter}: {title}")
+        plt.savefig(filename, dpi=300, bbox_inches='tight')
         print(f"Plot saved as: {filename}")
+        self.analysis_summary.append(f"Plot {self.figure_counter}: {title}")
         plt.close()
 
     def _make_llm_request(self, messages: List[Dict[str, str]]) -> Optional[str]:
@@ -64,11 +68,6 @@ class LLMAnalyzer:
     def _execute_code_safely(self, code: str, df: pd.DataFrame) -> tuple[bool, Optional[str]]:
         """Execute code with safety measures and return success status and error message."""
         try:
-            # Create string buffer to capture print outputs
-            old_stdout = sys.stdout
-            result_buffer = StringIO()
-            sys.stdout = result_buffer
-            
             # Ensure the code uses the provided DataFrame
             if 'pd.read_csv' in code:
                 raise ValueError("Code should not read from CSV files directly. Use the provided DataFrame 'df'.")
@@ -88,14 +87,8 @@ class LLMAnalyzer:
             # Execute the code in the restricted environment
             exec(code, {'__builtins__': __builtins__}, local_dict)
             
-            # Capture the output
-            sys.stdout = old_stdout
-            output = result_buffer.getvalue()
-            self.analysis_results.append(output)
-            
             return True, None
         except Exception as e:
-            sys.stdout = old_stdout
             error_msg = f"Error: {str(e)}\nTraceback:\n{traceback.format_exc()}"
             return False, error_msg
 
@@ -175,6 +168,11 @@ class LLMAnalyzer:
 
             print(f"Successfully loaded dataset with shape: {df.shape}")
 
+            # Store initial analysis
+            self.analysis_summary.append(f"Dataset loaded with {df.shape[0]} rows and {df.shape[1]} columns")
+            self.analysis_summary.append("\nColumn Types:\n" + df.dtypes.to_string())
+            self.analysis_summary.append("\nMissing Values:\n" + df.isnull().sum().to_string())
+
             # Generate initial data description
             data_description = (
                 f"Dataset Overview:\n"
@@ -228,30 +226,43 @@ class LLMAnalyzer:
 
     def _generate_final_insights(self, df: pd.DataFrame):
         """Generate final insights after analysis."""
-        # Combine all analysis results and plot descriptions
-        analysis_summary = "\n".join(self.analysis_results)
-        plot_summary = "\n".join(self.plot_descriptions)
+        # Create a summary of the numerical analysis
+        numerical_summary = df.describe().to_string()
+        
+        # Create a summary of missing values
+        missing_values = df.isnull().sum().to_string()
+        
+        # Join all analysis summaries
+        analysis_text = "\n".join(self.analysis_summary)
         
         insight_prompt = f"""
-        Based on the following analysis of a dataset with columns {df.columns.tolist()}:
+        Analyze this Goodreads dataset based on the following information:
 
-        Analysis Results:
-        {analysis_summary}
+        1. Dataset Statistics:
+        {numerical_summary}
 
-        Generated Visualizations:
-        {plot_summary}
+        2. Missing Values Analysis:
+        {missing_values}
 
-        Please provide a comprehensive summary of key insights and recommendations.
-        Focus on:
-        1. Key patterns and trends shown in the plots
+        3. Analysis Summary:
+        {analysis_text}
+
+        4. Generated Visualizations:
+        - {self.figure_counter} plots were generated analyzing different aspects of the data
+
+        Please provide:
+        1. Key patterns and trends from the data
         2. Important statistical findings
-        3. Notable relationships between variables
-        4. Any anomalies or interesting observations
-        5. Actionable recommendations based on the analysis
+        3. Notable relationships between book ratings and other variables
+        4. Insights about the distribution of ratings
+        5. Any interesting observations about books and their characteristics
+        6. Recommendations for stakeholders
+        
+        Format the response with clear headers and bullet points.
         """
         
         messages = [
-            {"role": "system", "content": "You are a data analyst presenting findings to stakeholders."},
+            {"role": "system", "content": "You are a data analyst specializing in book data and user ratings analysis."},
             {"role": "user", "content": insight_prompt}
         ]
         
