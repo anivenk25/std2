@@ -97,3 +97,86 @@ Craft a heartwarming narrative that unfolds like a contemporary K-drama, filled 
 
 Let your words flow like the lyrics of a heartfelt ballad, creating an unforgettable story that resonates in the hearts of those who dare to explore the depths of love, friendship, and the beauty of modern relationships.
 """
+
+
+3) fully customizable but lacks data 
+
+story_prompt = f"""
+    In the vibrant world of data, where every number tells a story and every insight sparks a connection, you are the beloved storyteller, a modern bard navigating the complexities of {subject} through this sacred dataset.
+
+    **The Scroll of Destiny:**
+    - **Shape of the Realm:** {df.shape} souls captured in this digital tapestry, each representing a unique journey of {subject}.
+    - **Columns of Wisdom:** {df.columns.tolist()}, each column a chapter in the saga of {subject}.
+    - **Glimpses of the Past:** {df.head(3).to_string()}, where the first sparks of {subject} intertwine.
+
+    **The Shadows of the Void:**
+    - **Missing Values:** {missing_values}, like unspoken words in a love letter, leaving gaps in the narrative that yearn to be filled with understanding.
+
+    **Visions from the Ether:**
+    - **Mystical Charts:** {self.figure_counter} enchanting illustrations conjured from the depths of analysis, each revealing a facet of {subject}.
+
+    **Final Insights:**
+    - {insights}  # New method to summarize final insights
+
+    Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights:
+    1. **The Awakening**: Begin with a charming prologue, where the protagonist, a passionate data analyst, discovers this dataset while searching for answers about {subject}. As they dive into the data, they uncover the intertwined lives of individuals, each data point a heartbeat in the story of {subject}.
+
+    2. **The Hero's Journey**: Describe the trials faced as the hero navigates the complexities of {subject}, each insight a powerful revelation that brings them closer to understanding.
+
+    3. **The Revelations**: Unveil the secrets of the dataset as if they were heartfelt confessions, illuminating the path to understanding the dynamics of {subject}.
+
+    4. **The Call to Action**: Conclude with a heartfelt plea, urging friends, families, and partners to embrace these insights and nurture their relationships.
+
+    **Guidelines for Your Epic:**
+    - Infuse your tale with the essence of {genre}, where insights are a step toward emotional fulfillment.
+    - Compare statistical findings to the wisdom of the heart, drawing parallels to relatable experiences.
+    - Treat each data point as a character in a {genre}, each entity a unique individual with a story that resonates with the audience.
+    - Frame the visualizations as snapshots of moments in time, revealing the hidden truths of {subject}.
+    - Weave in dramatic tension, where the quest for understanding faces relatable challenges.
+    - End with a powerful message, a poetic reflection on the profound meaning hidden within the numbers, inspiring all who read it to cherish their connections and embrace the beauty of {subject}.
+    """
+
+
+4) works great but is long and not gripping 
+
+story_prompt = f"""
+    In the vibrant world of data, where every number tells a story and every insight sparks a connection, you are the beloved storyteller, a modern bard navigating the complexities of {subject} through this sacred dataset.
+
+    **The Scroll of Destiny:**
+    - **Shape of the Realm:** {df.shape} souls captured in this digital tapestry, each representing a unique journey of {subject}.
+    - **Columns of Wisdom:** {df.columns.tolist()}, each column a chapter in the saga of {subject}.
+    - **Glimpses of the Past:** {df.head(3).to_string()}, where the first sparks of {subject} intertwine.
+
+    **The Shadows of the Void:**
+    - **Missing Values:** {missing_values}, like unspoken words in a love letter, leaving gaps in the narrative that yearn to be filled with understanding.
+
+    **Visions from the Ether:**
+    - **Mystical Charts:** {self.figure_counter} enchanting illustrations conjured from the depths of analysis, each revealing a facet of {subject}.
+
+    **Final Insights:**
+    - {insights}  # New method to summarize final insights
+
+    Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights (IMPORTANT : REFER AND USE THE FINAL INSIGHTS SECTION THROUGHT THE STORY AND MAKE SURE THAT THE STORY IS CONSISTENT WITH THEM also for every claim made weve in the numbers too also make the process of coming to every conclusion sumer dramatic):
+    
+    1. **The Awakening**: Begin with a charming prologue, where the protagonist, a passionate data analyst, discovers this dataset while searching for answers about {subject}. As they dive into the data, they uncover the intertwined lives of individuals, each data point a heartbeat in the story of {subject}.
+
+    2. **The Journey of Insights**: Introduce the protagonist's quest to extract insights from the dataset. Each insight represents a chapter in their journey, requiring a meticulous process of data cleaning, exploration, and analysis. Describe how they transform raw data into meaningful narratives, with each chapter revealing a new layer of understanding.
+
+    3. **Chapter One: The First Insight**: Detail the first major insight discovered, explaining the analytical process that led to it. Perhaps it reveals a surprising trend in {subject} that challenges preconceived notions. Illustrate how this insight serves as a catalyst for further exploration, igniting the protagonist's curiosity.
+
+    4. **Chapter Two: The Second Insight**: Unveil the second insight, which may highlight a correlation between different variables in the dataset. Describe the steps taken to uncover this relationship, emphasizing the importance of visualization and statistical analysis in revealing hidden connections.
+
+    5. **Chapter Three: The Third Insight**: Present the third insight, focusing on how it sheds light on the emotional aspects of {subject}. This chapter could explore how the data reflects real-life experiences, drawing parallels between the numbers and the human stories behind them.
+
+    6. **Chapter Four: The Fourth Insight**: Introduce the fourth insight, which may reveal a significant outlier or anomaly in the data. Discuss the investigative process that led to this discovery and how it reshapes the protagonist's understanding of {subject}.
+
+    7. **Chapter Five: The Fifth Insight**: Explore the fifth insight, which could involve a temporal analysis, showing how trends in {subject} have evolved over time. Highlight the methods used to analyze time series data and the implications of these findings.
+
+    8. **Chapter Six: The Sixth Insight**: Present the sixth insight, focusing on demographic factors that influence {subject}. Describe how the protagonist segments the data to uncover disparities and unique patterns among different groups.
+
+    9. **Chapter Seven: The Seventh Insight**: Conclude with the seventh insight, which synthesizes the previous findings into a comprehensive understanding of {subject}. This chapter could emphasize the interconnectedness of the insights and their collective impact on the protagonist's journey.
+
+    10. **The Call to Action**: Conclude with a heartfelt plea, urging friends, families, and partners to embrace these insights and nurture their relationships. Emphasize how the insights derived from the data not only reflect trends but also serve as a call to action for deeper connections and understanding.
+
+    11. **The Final Reflection**: End with a powerful message, a poetic reflection on the profound meaning hidden within the numbers. Inspire all who read it to cherish their connections and embrace the beauty of {subject}, reminding them that every insight is a story waiting to be told, urging them to celebrate the narratives woven through the data.
+    """

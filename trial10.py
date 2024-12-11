@@ -210,11 +210,28 @@ class LLMAnalyzer:
 
             # Generate the epic story
             print("\nGenerating the epic story...")
-            self._generate_epic_story(df,a)
+            story = self._generate_epic_story(df, a)  # Store the generated story
+
+            # Print the comprehensive summary
+            self._print_comprehensive_summary(df, a, story)  # New method to print summary
 
         except Exception as e:
             print(f"Analysis failed: {str(e)}")
             traceback.print_exc()
+
+    def _print_comprehensive_summary(self, df: pd.DataFrame, insights: str, story: str):
+        """Print a comprehensive summary of the analysis."""
+        print("\nComprehensive Summary:")
+        print("=" * 50)
+        print("Dataset Overview:")
+        print(f"Shape: {df.shape}")
+        print(f"Columns: {df.columns.tolist()}")
+        print(f"Sample data:\n{df.head(3).to_string()}")
+        print("\nFinal Insights:")
+        print(insights)
+        print("\nEpic Story:")
+        print(story)
+        print("=" * 50)
 
     def _generate_final_insights(self, df: pd.DataFrame):
         subject = self._determine_subject(df)
@@ -258,7 +275,7 @@ class LLMAnalyzer:
             print("\nKey Insights:")
             print(insights)
 
-    def _generate_epic_story(self, df: pd.DataFrame,insights):
+    def _generate_epic_story(self, df: pd.DataFrame, insights):
         """Generate an epic narrative based on the data analysis."""
         # Create summaries for context
         numerical_summary = df.describe().to_string()
@@ -279,9 +296,16 @@ class LLMAnalyzer:
 
     - {self.figure_counter} enchanting illustrations conjured from the depths of analysis, each revealing a facet of {subject}.
 
-    **Final Insights:**
-    - {insights}  
-    Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights (IMPORTANT : REFER AND USE THE FINAL INSIGHTS SECTION THROUGHT THE STORY AND MAKE SURE THAT THE STORY IS CONSISTENT WITH THEM also for every claim made weave in the numbers too also make the process of coming to every conclusion sumer dramatic)
+    **Chapters of Insight:**
+    {insights}  # Each insight will be treated as a chapter in the story.
+
+    **Comprehensive Summary:**
+    - Shape: {df.shape}
+    - Columns: {df.columns.tolist()}
+    - Sample data:\n{df.head(3).to_string()}
+    - Final Insights: {insights}
+
+    Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights (IMPORTANT: REFER AND USE THE FINAL INSIGHTS SECTION THROUGHOUT THE STORY AND MAKE SURE THAT THE STORY IS CONSISTENT WITH THEM. Also, for every claim made, weave in the numbers too and make the process of coming to every conclusion super dramatic).
 
     MAKE THE PROCESS OF ARRIVING TO THESE CONCLUSIONS VERY GRIPPING AND UNIQUE 
 
@@ -289,9 +313,9 @@ class LLMAnalyzer:
 
     ADD DRAMA ADD LOVE ADD THRILL ADD HERO ENTRY AND COOL SHIT LIKE THAT 
 
-    THE STORY MUST BE VERY MEMEORABLE AND MUST APPEASE INDIAN AUDIENCE BUT YOU CAN MAKE THE STORY NON INDIAN TOO IF NEEDED.
+    THE STORY MUST BE VERY MEMORABLE AND MUST APPEAL TO AN INDIAN AUDIENCE BUT YOU CAN MAKE THE STORY NON-INDIAN TOO IF NEEDED.
 
-    AGAIN THE FINAL INSIGHTS SECTION IS GODLIKE -- FOLLOW IT AND PRESENT AS MUCH INFO FROM THAT IN THE STORY AS POSSIBLE
+    AGAIN, THE FINAL INSIGHTS SECTION IS GODLIKE -- FOLLOW IT AND PRESENT AS MUCH INFO FROM THAT IN THE STORY AS POSSIBLE
 
     USE {insights}
     """
