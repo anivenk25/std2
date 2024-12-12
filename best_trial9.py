@@ -257,6 +257,7 @@ class LLMAnalyzer:
         if insights:
             print("\nKey Insights:")
             print(insights)
+            return (str(insights))
 
     def _generate_epic_story(self, df: pd.DataFrame,insights):
         """Generate an epic narrative based on the data analysis."""

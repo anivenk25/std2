@@ -10,6 +10,7 @@ from typing import Optional, Dict, Any, List
 import traceback
 import re
 from pathlib import Path
+import sys
 
 class LLMAnalyzer:
     def __init__(self):
@@ -23,6 +24,7 @@ class LLMAnalyzer:
             "Authorization": f"Bearer {self.token}",
         }
         self.figure_counter = 0
+        self.plots = []  # Store plot filenames
 
     def _save_and_close_plot(self, title: str):
         """Save the current plot to a file and close it."""
@@ -30,6 +32,7 @@ class LLMAnalyzer:
         filename = f'plot_{self.figure_counter}.png'
         plt.title(title)
         plt.savefig(filename)
+        self.plots.append(filename)  # Store the filename
         print(f"Plot saved as: {filename}")
         plt.close()
 
@@ -206,19 +209,23 @@ class LLMAnalyzer:
                             print("Failed to fix code after maximum attempts")
 
             # Generate final insights
-            a = self._generate_final_insights(df)
+            insights = self._generate_final_insights(df)
 
             # Generate the epic story
             print("\nGenerating the epic story...")
-            self._generate_epic_story(df,a)
+            story = self._generate_epic_story(df, insights)
+            
+            # Generate README.md
+            if story:
+                self.generate_readme(story)
 
         except Exception as e:
             print(f"Analysis failed: {str(e)}")
             traceback.print_exc()
 
     def _generate_final_insights(self, df: pd.DataFrame):
-        subject = self._determine_subject(df)
         """Generate final insights after analysis."""
+        subject = self._determine_subject(df)
         # Create a summary of the numerical analysis
         numerical_summary = df.describe().to_string()
 
@@ -257,9 +264,9 @@ class LLMAnalyzer:
         if insights:
             print("\nKey Insights:")
             print(insights)
-            return (str(insights))
+            return str(insights)
 
-    def _generate_epic_story(self, df: pd.DataFrame,insights):
+    def _generate_epic_story(self, df: pd.DataFrame, insights):
         """Generate an epic narrative based on the data analysis."""
         # Create summaries for context
         numerical_summary = df.describe().to_string()
@@ -270,15 +277,33 @@ class LLMAnalyzer:
         genre = self._determine_genre(df)
         
         story_prompt = f"""
-    
-    **Final Insights:**
-    make a story based on 
-    - {insights}  
-    
-    AGAIN THE FINAL INSIGHTS SECTION IS GODLIKE -- FOLLOW IT AND PRESENT AS MUCH INFO FROM THAT IN THE STORY AS POSSIBLE
+        In the vibrant world of data, where every number tells a story and every insight sparks a connection, you are the beloved storyteller, a modern bard navigating the complexities of {subject} through this dataset.
 
-    USE {insights}
-    """
+        - {df.shape} data points each representing a unique journey of {subject}.
+        - {df.columns.tolist()}, each column a chapter in the saga of {subject}.
+        -  {df.head(3).to_string()}, where the first sparks of {subject} intertwine.
+
+        - {missing_values}, like unspoken words in a love letter, leaving gaps in the narrative that yearn to be filled with understanding.
+
+        - {self.figure_counter} enchanting illustrations conjured from the depths of analysis, each revealing a facet of {subject}.
+
+        **Final Insights:**
+        - {insights}  
+
+        Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights (IMPORTANT : REFER AND USE THE FINAL INSIGHTS SECTION THROUGHOUT THE STORY AND MAKE SURE THAT THE STORY IS CONSISTENT WITH THEM also for every claim made weave in the numbers too also make the process of coming to every conclusion summer dramatic)
+
+        MAKE THE PROCESS OF ARRIVING TO THESE CONCLUSIONS VERY GRIPPING AND UNIQUE 
+
+        TUG ON EMOTIONS 
+
+        ADD DRAMA ADD LOVE ADD THRILL ADD HERO ENTRY AND COOL SHIT LIKE THAT 
+
+        THE STORY MUST BE VERY MEMORABLE AND MUST APPEASE INDIAN AUDIENCE BUT YOU CAN MAKE THE STORY NON INDIAN TOO IF NEEDED.
+
+        AGAIN THE FINAL INSIGHTS SECTION IS GODLIKE -- FOLLOW IT AND PRESENT AS MUCH INFO FROM THAT IN THE STORY AS POSSIBLE
+
+        USE {insights}
+        """
 
         messages = [
             {"role": "system", "content": "You are an immortal storyteller who transforms data into legendary tales."},
@@ -291,6 +316,7 @@ class LLMAnalyzer:
             print("The Legend of the Literary Realms")
             print("="*50 + "\n")
             print(story)
+            return story
 
     def _determine_subject(self, df: pd.DataFrame) -> str:
         """Determine the subject of the dataset based on its content."""
@@ -309,31 +335,38 @@ class LLMAnalyzer:
                 return "Analysis of Ratings"  # Example genre
         return "Various Themes"  # Default genre if no keywords found
 
+    def generate_readme(self, story: str):
+        """Generate README.md with the story and embedded plots."""
+        readme_content = "# Data Analysis Story\n\n"
+        readme_content += story + "\n\n"
+        
+        # Add plots section
+        readme_content += "## Supporting Visualizations\n\n"
+        for plot in self.plots:
+            readme_content += f"![{plot}]({plot})\n\n"
+        
+        with open('README.md', 'w', encoding='utf-8') as f:
+            f.write(readme_content)
 
 def main():
     """Main function to run the analysis."""
     try:
-        # Get current directory
-        current_dir = Path.cwd()
+        if len(sys.argv) != 2:
+            print("Usage: uv run autolysis.py dataset.csv")
+            sys.exit(1)
 
-        # Look for CSV files in the current directory
-        csv_files = list(current_dir.glob('*.csv'))
-
-        if not csv_files:
-            raise FileNotFoundError("No CSV files found in the current directory.")
-
-        # Use the first CSV file found
-        file_path = csv_files[0]
-        print(f"Found CSV file: {file_path}")
+        file_path = sys.argv[1]
+        if not Path(file_path).exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
 
         # Initialize and run analyzer
         analyzer = LLMAnalyzer()
-        analyzer.analyze_dataset(str(file_path))
+        analyzer.analyze_dataset(file_path)
 
     except Exception as e:
         print(f"Program failed: {str(e)}")
         traceback.print_exc()
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
-
