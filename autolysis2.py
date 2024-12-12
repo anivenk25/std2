@@ -92,7 +92,7 @@ class LLMAnalyzer:
             error_msg = f"Error: {str(e)}\nTraceback:\n{traceback.format_exc()}"
             return False, error_msg
 
-    def _fix_code_recursively(self, code: str, error_msg: str, df: pd.DataFrame, max_attempts: int = 3) -> bool:
+    def _fix_code_recursively(self, code: str, error_msg: str, df: pd.DataFrame, max_attempts: int = 5) -> bool:
         """Recursively try to fix code using LLM until it works or max attempts reached."""
         attempt = 0
         while attempt < max_attempts:
@@ -112,7 +112,9 @@ class LLMAnalyzer:
             4. Includes proper error handling
             5. Uses plt.figure() before creating each plot
             6. Uses plt.show() after each plot is complete
-            7. Does not reference any specific CSV files
+            7. Does not reference any specific CSV files 
+            8. USE THE FULL DATA ALL THE ROWS
+            9. Count must be equal to no of rows in the original data frame use all the data 
 
             Provide ONLY the corrected code block, no explanations.
             """
@@ -200,6 +202,8 @@ class LLMAnalyzer:
             5. Uses plt.figure() before creating each plot
             6. Uses plt.show() after each plot is complete
             7. Does not reference any specific CSV files
+            8. USE THE WHOLE FUCKING DATA NO JUST THE HEAD 
+            9. USE ALL THE ROWS 
 
             Provide the code in a Python code block.
             """
@@ -305,13 +309,11 @@ class LLMAnalyzer:
         Craft a heartwarming narrative that unfolds like a contemporary {genre}, filled with emotional growth and profound insights (IMPORTANT : REFER AND USE THE FINAL INSIGHTS SECTION THROUGHOUT THE STORY AND MAKE SURE THAT THE STORY IS CONSISTENT WITH THEM also for every claim made weave in the numbers too also make the process of coming to every conclusion summer dramatic)
 
         MAKE THE PROCESS OF ARRIVING TO THESE CONCLUSIONS VERY GRIPPING AND UNIQUE 
-
         TUG ON EMOTIONS 
-
         ADD DRAMA ADD LOVE ADD THRILL ADD HERO ENTRY AND COOL SHIT LIKE THAT 
-
         THE STORY MUST BE VERY MEMORABLE AND MUST APPEASE INDIAN AUDIENCE BUT YOU CAN MAKE THE STORY NON INDIAN TOO IF NEEDED.
-
+        USE VIVID IMAGERY AND GIVE THE SETTING AN ANIME LIKE SERENITY I HSOULD BE AT PEACE READING IT . 
+        TUG ON EMOTIONS .
         AGAIN THE FINAL INSIGHTS SECTION IS GODLIKE -- FOLLOW IT AND PRESENT AS MUCH INFO FROM THAT IN THE STORY AS POSSIBLE
 
         USE {insights}
