@@ -1,56 +1,34 @@
 # Data Analysis Story
 
-In a realm where words danced like fireflies under a starlit sky, there existed a magical library nestled between the whispering woods and the shimmering river of time—The Grand Archive. It was said to house the souls of many books, each with a unique story waiting to unfold. Readers, like brave adventurers, would embark on quests within this enchanted place, seeking wisdom and solace in the pages of legends long past.
+In a world where stories weave themselves into the very fabric of existence, there shone a realm of vibrant pages, filled with whispers of adventure and the heartbeats of countless readers. It was a dimension governed by the rhythm of numbers and the wisdom of words—the kingdom of Books. Each tome held a unique tale, locked away within the numbered spines of a library stretching beyond the horizon. But within this sanctuary of stories, a great calamity began to brew.
 
-### Chapter 1: The Entrance of Destiny  
+Our tale unfolds in a quaint village, reminiscent of serene anime landscapes, where vines curled around wooden doors and cerulean skies met emerald fields. Here lived a young bibliophile, Aanya, who discovered one day that the enchanted librarians—the guardians of literary knowledge—had fallen silent, their voices muted by mysterious forces. Aanya’s heart, which thrummed like the pages of a well-loved novel, knew that she must venture forth to uncover the truths hidden between the lines of this ancient library.
 
-One day, a young girl named Arya, with eyes that sparkled like the evening stars, stepped into the Grand Archive. Her heart was heavy with the weight of her dreams; dreams that had been crushed by the mundane realities of life. **Her journey began as she reached for a dusty tome that had never been opened since its birth in the year 1750.** It was here she discovered something magical: **a tapestry of over 10,000 books lay before her, each a testament to the vibrant human experience over centuries.** 
+With nothing but her trusty notebook and a heart full of courage, Aanya stumbled upon an ancient manuscript containing the legends of the Books Dataset—a tapestry of 10,000 unique journeys waiting to be explored. As she began her quest, the numbers sprang to life, revealing stories through the lens of data.
 
-As she flipped through the pages, the book revealed its secrets. **With an average rating of 4.00, the voices of millions echoed through time, expressing delightful emotions and heart-wrenching tales.** A chill ran down Arya’s spine—these books had been loved, cherished, and shared by countless souls seeking refuge in their stories.
+In the heart of the dataset, she discovered the **Average Rating**—a glimmer of hope that nearly all stories had been well received, echoing with an average score of 4.00 out of 5. Each book sparkled like a priceless gem, showing that despite their unique paths, these narratives had transcended time, touching the hearts of many. It was a testament to the enduring power of storytelling, where whispers of legendary authors from eras past mingled with contemporary voices.
 
-### Chapter 2: Heart and Numbers—The Revelations
+The deeper she delved, Aanya could feel the pulse of history—her fingers traced the publication years ranging from 1750 to 2017. The legends told of countless authors, each leading to burgeoning genres, evolving with the societal tides. Aanya felt the tremors of change resonate within her; recent tomes shimmered with contemporary writing styles, reflecting readers’ shifting tastes and the digital revolution. This exploration unveiled a beautiful tapestry—the enduring relevance of books, each new title another stitch in the fabric of literary legacy.
 
-It was in that moment of discovery that Arya's heart raced. What if these sacred scripts held not only stories but also significant truths? With newfound determination, she sought the counsel of **Vira**, the wise old librarian, known for her deep understanding of the library’s considerable arcane knowledge. 
+Yet, the shadows of uncertainty lurked beneath the surface. Aanya stumbled upon the **missing values**—700 forgotten ISBNS and 585 lost titles echoed in her heart like unrequited love. The integrity of the kingdom felt fractured, each missing fragment a tear in the literary quilt. Aanya resolved to gather what was lost, heart aching for those nameless stories yearned for recognition.
 
-“Loneliness can only be conquered by understanding, dear Arya,” Vira mused, her voice like the soft rustling of leaves. “Let us unlock the knowledge hidden within these pages.” 
+As she journeyed deeper, she witnessed the **Ratings Distribution**, where the joyous thrum of reader engagement pulsed through the air. Aanya discovered how a few titles, like radiant supernovas, received up to **4.78 million ratings**, while others lingered, quietly awaiting their moment to shine. Each reflection inspired her; the balance of high scores and humble beginnings became a motif for her quest, reminding her that every book—no matter its fame—was worthy of being told.
 
-**“This dataset of Books spans years, with publications ranging from the ancient past to 2017, creating a beautiful horizon of narratives,”** Arya exclaimed, feeling the warmth of connection flood her heart. Vira nodded in agreement, her eyes glimmering at the vast landscape of wisdom before them.
+But it wasn’t just about numbers; stories spun around **relationships**—Aanya noticed that popular titles blossomed like flowers in a sunlit garden, flourishing alongside abundant ratings. Books that ignited fervor garnered both admiration and high ratings, denoted by a radiant correlation. With each parchment scroll and analysis, the bond between readers’ voices and a book’s legacy grew stronger.
 
-Together, they began to weave together stories of both joy and sorrow, all while noting **a staggering average ratings count of about 54,001**, signifying the extensive love poured into the written word. Each chapter told of the lives touched by the ink; a world where the complexities of love and loss transformed into gentle reminders of the power of stories.
+Then the tumult arose—Aanya faced a shimmering portal that challenged her notions of engagement. Amid her data exploration, she unearthed a treasure: an astonishing **average of 2,919 text reviews** gracing each title. Here lay the heart of the readers, their thoughts woven like threads of gold. Aanya felt that if she could amplify these whispered sentiments, other readers might catch the echo and rediscover the enchantment of books long overlooked. “Perhaps,” she thought, “every review is a portal waiting to unfold new adventures.”
 
-### Chapter 3: The Dramatic Revelations
+With each revelation, Aanya felt the weight of responsibility. She imagined herself as a beacon, illuminating the path for publishers seeking **strategies** to draw attention to lesser-known titles yearning for love—a chance to rewrite their destinies. Her heart swelled as she envisioned marketing campaigns crafted around books eager to explode into popularity.
 
-As time waned, Vira took Arya on a quest to discover the relationships hidden within the data. They uncovered a thrilling truth—the correlation between the ratings count and the average rating itself! “It appears that those who have rated often contribute to a higher average,” Vira shared, **her voice vibrating with excitement. “It’s a dance of trust between readers and their well-loved tomes.”**
+As she prepared to return to her village, inspiration surged through her veins like a wild river. Magical possibilities glittered in Aanya's mind. She dove deeper into the statistics, pondering the **diversity of reader opinions** and the remarkable variance in ratings—a reminder that each tale spoke differently to different souls. Like a tapestry spinning in the gentle breeze, these intricacies added layers of depth to the very essence of stories, affirming their ability to resonate with varied emotions and perspectives.
 
-In that realm, Arya learned that books birthed after 2000 consistently held greater ratings, producing a sense of evolution in the hearts and minds of readers. It was a thrilling ebb and flow of preferences, much like the changing tides of the ocean at dawn.
+As the sun dipped below the horizon, painting the sky in lavender hues, Aanya reflected upon the profound insights she had unearthed: the age of books held timeless tales whose impact remained, and current trends shone brightly with popularity among mass audiences. This splendid realization crescendoed—a chorus echoing that **stories, old or new, hold the power to transcend time**, binding readers together across generations.
 
-“Could it be?” Arya thought, “that readers have become more attuned to their desires, seeking beauty in words, while older tomes silently wait for their stories to be rediscovered?” 
+In her heart, Aanya understood that every number told a story, each insight an adventure waiting to be shared. With a sense of fulfillment blossoming within her, she returned to her village, determined to breathe life back into the narratives that lay hidden, to gather the lost titles, and to share the wondrous legacy of books with all who hungered for tales.
 
-### Chapter 4: A Symphony of Insights
+Thus, an immortal bond formed within Aanya—a bibliophile turned storyteller, for she had learned that amidst the chaos of missing narratives and silent authors, there existed a beauty in the collective journey. The Kingdom of Books wasn’t merely about statistics; it was about the feelings they unleashed, the dialogues they sparked, and the connections they fostered.
 
-As they explored deeper into the library, Arya and Vira stumbled upon **a mesmerizing sight—ratings skewed toward the higher echelons of 4 and 5 stars**. “Could it be that only those who feel passionate about a tale share their voice?” Arya pondered, feeling the joy of a writer’s heart. 
-
-Meanwhile, **the low counts of negative ratings were like whispers of the past**, hinting at a curated selection where only the best reached their audience. This realization ignited a fire in Arya’s spirit—perhaps her mission was to inspire both readers and authors to share their raw experiences without fear. 
-
-### Chapter 5: The Call to Action
-
-With newfound wisdom, Arya shared her insights with fellow seekers at the library—an impromptu gathering sparked by the thrill of discovery. “Let us come together,” she declared, her voice resonating with determination. “Let us honor our voices! We must encourage open ratings to paint a fuller picture of our beloved books!”
-
-Vira stood proudly by her side, “We should celebrate the recent publications, drawing upon their brighter tales and vibrant characters to inspire our dreams. Let us look to this diversity—a myriad of authors, from well-known beacons to new voices, knitting together experiences across borders.”
-
-### Chapter 6: Legacy of the Written Word  
-
-As Arya’s journey through The Grand Archive reached its exhilarating conclusion, she felt the ripples of change swirling around her. “In the serene heart of this library,” she thought, “lies the pulse of stories untold, waiting to be cherished.” 
-
-In that sacred space, Arya understood that the **tapestries of stories woven through years and ratings stood as monuments** to the human spirit. The Grand Archive, with its storied past and vibrant future, demanded to be cherished, loved, and shared. 
-
-### Epilogue: The Everlasting Dream
-
-And so, Arya became the valiant champion of narratives, a bridge between voices both old and new, sparking a movement amongst readers across the lands. She ignited the passion for storytelling, while the Grand Archive grew ever more vibrant, a sanctuary where the emotional growth of characters mirrored the profound journeys of its readers.
-
-In this world where **numbers embolden emotions**, and where every passage held a whisper of wisdom, the legacy of the written word shone brightly—a heartwarming tale, a profound reminder that we are, indeed, connected through stories that transcend time. 
-
-And so, dear reader, as you close this tale, remember: just like Arya, you too hold the power to share your voice among the whispers of the past and the dreams of the future—each of us a storyteller in this grand tapestry of life, forever intertwined.
+And so, in a realm where numbers grew to be much more than figures, Aanya emerged, a hero bearing the passion of stories, ready to paint the world with the colors of love, adventure, and enlightenment, knowing that every book—a pivotal chapter in humanity’s eternal saga—was but a heartbeat away from being touched once more.
 
 ## Supporting Visualizations
 
@@ -61,4 +39,12 @@ And so, dear reader, as you close this tale, remember: just like Arya, you too h
 ![plot_3.png](plot_3.png)
 
 ![plot_4.png](plot_4.png)
+
+![plot_5.png](plot_5.png)
+
+![plot_6.png](plot_6.png)
+
+![plot_7.png](plot_7.png)
+
+![plot_8.png](plot_8.png)
 
