@@ -1,5 +1,5 @@
 import os
-import requests
+import sys
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,6 +7,24 @@ import numpy as np
 from pathlib import Path
 import traceback
 from typing import Optional, Dict, Any, List
+from dataclasses import dataclass
+import asyncio
+import aiohttp
+import time
+from functools import wraps
+from scipy import stats
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import os
+import requests
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+from pathlib import Path
+import traceback
+from typing import Optional, Dict, Any, List, Tuple
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 import sys
@@ -38,37 +56,24 @@ class AnalysisConfig:
     output_dir: Path = Path("output")
     time_limit: int = 180  # 3 minutes in seconds
 
-class APIClient:
-    """Handles API communication with LLM service."""
-    def __init__(self):
+class AsyncAPIClient:
+    """Handles asynchronous API communication with LLM service."""
+    def __init__(self, base_url: str):
+        self.base_url = base_url
         self.token = os.getenv("AIPROXY_TOKEN")
         if not self.token:
             raise EnvironmentError("AIPROXY_TOKEN is not set")
-        
-        self.proxy_url = "https://aiproxy.sanand.workers.dev/openai/v1/chat/completions"
-        self.headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.token}",
-        }
 
-    def make_request(self, messages: List[Dict[str, str]]) -> Optional[str]:
-        """Make API request with error handling."""
-        try:
-            data = {
-                "model": "gpt-4o-mini",
-                "messages": messages
-            }
-            response = requests.post(
-                self.proxy_url, 
-                headers=self.headers, 
-                json=data, 
-                timeout=30
-            )
-            response.raise_for_status()
-            return response.json()['choices'][0]['message']['content']
-        except Exception as e:
-            print(f"API request failed: {str(e)}")
-            return None
+    async def fetch(self, session, endpoint, payload):
+        """Fetch data from the API asynchronously."""
+        url = f"{self.base_url}/{endpoint}"
+        async with session.post(url, json=payload) as response:
+            return await response.json()
+
+    async def call_api(self, endpoint, payload):
+        """Public method to call API asynchronously."""
+        async with aiohttp.ClientSession() as session:
+            return await self.fetch(session, endpoint, payload)
 
 class StatisticalMethods:
     """Collection of statistical analysis methods."""
@@ -81,6 +86,14 @@ class StatisticalMethods:
             'missing': data.isnull().sum(),
             'dtypes': data.dtypes
         }
+
+    @staticmethod
+    def handle_missing_values(data: pd.DataFrame) -> pd.DataFrame:
+        """Handle missing values in the dataset."""
+        if data.isnull().sum().sum() > 0:
+            print("Handling missing values...")
+            data = data.dropna()  # or use fillna() with a strategy
+        return data
 
     @staticmethod
     def normality_test(data: pd.Series) -> Dict[str, Any]:
@@ -120,11 +133,11 @@ class StatisticalMethods:
             'components': transformed.tolist()
         }
 
-class VisualizationStrategy(ABC):
+class VisualizationStrategy:
     """Abstract base class for visualization strategies."""
-    @abstractmethod
     def create_visualization(self, df: pd.DataFrame, fig_path: Path, title: str) -> None:
-        pass
+        """Create a visualization."""
+        raise NotImplementedError
 
 class CorrelationHeatmap(VisualizationStrategy):
     """Generate a correlation heatmap."""
@@ -134,8 +147,8 @@ class CorrelationHeatmap(VisualizationStrategy):
         plt.title(f"Correlation Heatmap - {title}")
         plt.imshow(numeric_df.corr(), cmap='coolwarm', interpolation='nearest')
         plt.colorbar()
-        plt.xticks(ticks=np.arange(len(numeric_df.columns)), labels=numeric_df.columns, rotation=45)
-        plt.yticks(ticks=np.arange(len(numeric_df.columns)), labels=numeric_df.columns)
+        plt.xticks(range(len(numeric_df.columns)), numeric_df.columns, rotation=90)
+        plt.yticks(range(len(numeric_df.columns)), numeric_df.columns)
         plt.tight_layout()
         plt.savefig(fig_path, dpi=300)
         plt.close()
@@ -161,105 +174,12 @@ class DistributionPlot(VisualizationStrategy):
         plt.savefig(fig_path, dpi=300)
         plt.close()
 
-class StatisticalAnalyzer:
-    """Enhanced statistical analyzer with method selection."""
-    def __init__(self):
-        self.methods = StatisticalMethods()
-        self.api_client = APIClient()
-        
-    @timeit
-    def select_analysis_methods(self, df: pd.DataFrame) -> List[str]:
-        """Use LLM to select appropriate statistical methods."""
-        data_description = {
-            'shape': list(df.shape),
-            'dtypes': {col: str(dtype) for col, dtype in df.dtypes.items()},
-            'missing_values': df.isnull().sum().to_dict(),
-            'numeric_columns': df.select_dtypes(include=[np.number]).columns.tolist()
-        }
-        
-        prompt = f"""
-        Given the following dataset characteristics:
-        Shape: {data_description['shape']}
-        Data Types: {json.dumps(data_description['dtypes'], indent=2)}
-        Missing Values: {json.dumps(data_description['missing_values'], indent=2)}
-        Numeric Columns: {json.dumps(data_description['numeric_columns'], indent=2)}
-        
-        Available statistical methods:
-        1. basic_stats: Basic statistical summary
-        2. normality_test: Test for normal distribution
-        3. outlier_detection: Identify outliers using IQR
-        4. dimension_reduction: PCA for dimensionality reduction
-        
-        Select the most appropriate methods considering:
-        - Dataset size and characteristics
-        - Time constraint (analysis should complete within 3 minutes)
-        - Data types present
-        
-        Return a list of method names to apply.
-        """
-        
-        messages = [
-            {"role": "system", "content": "You are a statistical analysis expert."},
-            {"role": "user", "content": prompt}
-        ]
-        
-        response = self.api_client.make_request(messages)
-        if not response:
-            return ['basic_stats']
-            
-        methods = []
-        if 'basic_stats' in response.lower():
-            methods.append('basic_stats')
-        if 'normality' in response.lower():
-            methods.append('normality_test')
-        if 'outlier' in response.lower():
-            methods.append('outlier_detection')
-        if 'dimension' in response.lower() or 'pca' in response.lower():
-            methods.append('dimension_reduction')
-            
-        return methods
-
-    @timeit
-    def compute_advanced_stats(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Compute statistical analysis based on selected methods."""
-        selected_methods = self.select_analysis_methods(df)
-        results = {}
-        
-        numeric_df = df.select_dtypes(include=[np.number])
-        
-        for method in selected_methods:
-            try:
-                if method == 'basic_stats':
-                    results['basic_stats'] = self.methods.basic_stats(df)
-                
-                elif method == 'normality_test' and not numeric_df.empty:
-                    results['normality_tests'] = {
-                        col: self.methods.normality_test(numeric_df[col])
-                        for col in numeric_df.columns
-                    }
-                
-                elif method == 'outlier_detection' and not numeric_df.empty:
-                    results['outlier_analysis'] = {
-                        col: self.methods.outlier_detection(numeric_df[col])
-                        for col in numeric_df.columns
-                    }
-                
-                elif method == 'dimension_reduction' and not numeric_df.empty:
-                    if numeric_df.shape[1] > 2:
-                        results['dimension_reduction'] = self.methods.dimension_reduction(numeric_df)
-                
-            except Exception as e:
-                print(f"Error in {method}: {str(e)}")
-                continue
-                
-        return results
-
 class DataAnalyzer:
     """Enhanced data analyzer with comprehensive analysis capabilities."""
     def __init__(self, config: AnalysisConfig):
         self.config = config
-        self.api_client = APIClient()
-        self.stats_analyzer = StatisticalAnalyzer()
+        self.api_client = AsyncAPIClient(base_url="https://aiproxy.sanand.workers.dev/openai/v1/chat/completions")
+        self.stats_methods = StatisticalMethods()
         self.visualization_strategies = [
             CorrelationHeatmap(),
             DistributionPlot()
@@ -267,23 +187,26 @@ class DataAnalyzer:
         self.plots: List[str] = []
         
     @timeit
-    def analyze_dataset(self, file_path: str):
+    async def analyze_dataset(self, file_path: str):
         """Main method to analyze the dataset."""
         try:
             start_time = time.time()
             self._create_output_directory()
-            df = self._load_and_validate_dataset(file_path)
+            df = await self._load_and_validate_dataset(file_path)
             print(f"Successfully loaded dataset with shape: {df.shape}")
 
-            stats = self.stats_analyzer.compute_advanced_stats(df)
+            # Handle missing values
+            df = self.stats_methods.handle_missing_values(df)
+
+            stats = self.stats_methods.basic_stats(df)
             print("\nGenerating visualizations and analysis...")
             
-            self._generate_visualizations(df)
+            await self._generate_visualizations(df)
             
-            insights = self._generate_insights(df, stats)
+            insights = await self._generate_insights(df, stats)
             
             if time.time() - start_time < self.config.time_limit:
-                narrative = self._generate_narrative(df, stats, insights)
+                narrative = await self._generate_narrative(df, stats, insights)
                 if narrative:
                     self._generate_readme(narrative)
             else:
@@ -294,13 +217,13 @@ class DataAnalyzer:
             traceback.print_exc()
 
     def _create_output_directory(self):
-        """Create or clean output directory."""
+        """Create output directory for results."""
         if self.config.output_dir.exists():
             shutil.rmtree(self.config.output_dir)
         self.config.output_dir.mkdir(parents=True)
 
-    def _load_and_validate_dataset(self, file_path: str) -> pd.DataFrame:
-        """Load and validate dataset."""
+    async def _load_and_validate_dataset(self, file_path: str) -> pd.DataFrame:
+        """Load and validate the dataset."""
         path = Path(file_path)
         if not path.exists() or not path.is_file() or path.suffix.lower() != '.csv':
             raise ValueError(f"Invalid file path: {file_path}")
@@ -315,20 +238,20 @@ class DataAnalyzer:
             
         return df
 
-    def _generate_visualizations(self, df: pd.DataFrame):
+    async def _generate_visualizations(self, df: pd.DataFrame):
         """Generate visualizations for the dataset."""
         for i, strategy in enumerate(self.visualization_strategies):
             viz_path = self.config.output_dir / f'visualization_{i}.png'
             strategy.create_visualization(df, viz_path, f"Analysis {i+1}")
             self.plots.append(viz_path.name)
 
-    def _generate_insights(self, df: pd.DataFrame, stats: Dict[str, Any]) -> str:
+    async def _generate_insights(self, df: pd.DataFrame, stats: Dict[str, Any]) -> str:
         """Generate insights based on statistical analysis."""
         prompt = f"""
         Analyze this dataset based on the following information:
 
         1. Dataset Statistics:
-        {stats['basic_stats']['summary'].to_string()}
+        {stats['summary'].to_string()}
 
         2. Advanced Analysis:
         {json.dumps(stats, indent=2, default=str)}
@@ -348,13 +271,13 @@ class DataAnalyzer:
             {"role": "user", "content": prompt}
         ]
 
-        insights = self.api_client.make_request(messages)
+        insights = await self.api_client.call_api("analyze", messages)
         if insights:
             print("\nKey Insights Generated")
             return insights
         return ""
 
-    def _generate_narrative(self, df: pd.DataFrame, stats: Dict[str, Any], insights: str) -> str:
+    async def _generate_narrative(self, df: pd.DataFrame, stats: Dict[str, Any], insights: str) -> str:
         """Generate a narrative based on the analysis."""
         subject = self._determine_subject(df)
         
@@ -362,7 +285,7 @@ class DataAnalyzer:
         Create an engaging narrative about this {subject} dataset:
 
         Key Statistics:
-        {stats['basic_stats']['summary'].to_string()}
+        {stats['summary'].to_string()}
 
         Insights:
         {insights}
@@ -380,7 +303,7 @@ class DataAnalyzer:
             {"role": "user", "content": story_prompt}
         ]
 
-        narrative = self.api_client.make_request(messages)
+        narrative = await self.api_client.call_api("narrate", messages)
         if narrative:
             print("\nNarrative Generated")
             return narrative
@@ -426,7 +349,7 @@ def main():
         file_path = sys.argv[1]
         config = AnalysisConfig(output_dir=Path(Path(file_path).stem))
         analyzer = DataAnalyzer(config)
-        analyzer.analyze_dataset(file_path)
+        asyncio.run(analyzer.analyze_dataset(file_path))
 
     except Exception as e:
         print(f"Program failed: {str(e)}")
