@@ -1,17 +1,13 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "os",
-#     "requests",
-#     "json",
-#     "pandas",
+#     "numpy",
 #     "matplotlib",
 #     "seaborn",
-#     "typing",
-#     "numpy",
-#     "pathlib",
-#     "sys",
-#     "shutil",
+#     "requests",
+#     "pandas",
+#     "typer",
+#     "rich",
 # ]
 # description = "A versatile script for data processing, visualization, and system utilities."
 # entry-point = "main.py"
